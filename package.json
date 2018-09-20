@@ -21,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/troila-mobile/react-native-troila-alert/issues"
   },
-  "homepage": "https://github.com/troila-mobile/react-native-troila-alert#readme"
+  "homepage": "https://github.com/troila-mobile/react-native-troila-alert#readme",
   "peerDependencies": {
     "react-native": "^0.41.2"
   }
