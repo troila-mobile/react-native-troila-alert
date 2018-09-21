@@ -8,7 +8,7 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import RNTroilaAlert from './troilaalert';
+import CustomAlert from './troilaalert';
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -22,10 +22,20 @@ export default class App extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity onPress={()=>{RNTroilaAlert.showToast()}}>
-                    <Text style={styles.welcome}>Welcome to React Native!</Text>
+                <TouchableOpacity onPress={()=>{CustomAlert.toast("测试","success")}}>
+                    <Text style={styles.welcome}>弹出Toast && 图标</Text>
                 </TouchableOpacity>
-
+                <TouchableOpacity onPress={()=>{
+                    CustomAlert.showLoading("正在载入中...");
+                    setTimeout(()=>{
+                        CustomAlert.hideLoading()
+                    },3000)
+                }}>
+                    <Text style={styles.welcome}>弹出Loading</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{CustomAlert.hideLoading()}}>
+                    <Text style={styles.welcome}>隐藏Loading</Text>
+                </TouchableOpacity>
                 <Text style={styles.instructions}>To get started, edit App.js</Text>
                 <Text style={styles.instructions}>{instructions}</Text>
             </View>
