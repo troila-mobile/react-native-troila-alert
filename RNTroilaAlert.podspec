@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.author             = { "mu" => "author@domain.cn" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/troila-mobile/react-native-troila-alert.git", :tag => "0.0.2" }
-  s.source_files  = "ios/RNTroilaAlert/**/*.{h,m}"
+  s.source_files  = "ios/**/*.{h,m}"
   s.requires_arc = true
 
 
