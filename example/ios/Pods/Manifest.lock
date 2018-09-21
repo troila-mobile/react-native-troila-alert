@@ -1,0 +1,12 @@
+PODS:
+  - TRCustomAlert (0.0.1)
+
+DEPENDENCIES:
+  - TRCustomAlert
+
+SPEC CHECKSUMS:
+  TRCustomAlert: 3b0b2f89731cf38043fb9badb58850bd28b85e5d
+
+PODFILE CHECKSUM: 174a764dcfff4f1d30db4da3bc7ab7885a6671e9
+
+COCOAPODS: 1.4.0
