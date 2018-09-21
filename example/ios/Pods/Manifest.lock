@@ -1,12 +1,90 @@
 PODS:
+  - boost-for-react-native (1.63.0)
+  - DoubleConversion (1.1.6)
+  - Folly (2016.10.31.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+  - glog (0.3.5)
+  - React (0.57.0):
+    - React/Core (= 0.57.0)
+  - React/Core (0.57.0):
+    - yoga (= 0.57.0.React)
+  - React/CxxBridge (0.57.0):
+    - Folly (= 2016.10.31.00)
+    - React/Core
+    - React/cxxreact
+  - React/cxxreact (0.57.0):
+    - boost-for-react-native (= 1.63.0)
+    - Folly (= 2016.10.31.00)
+    - React/jschelpers
+    - React/jsinspector
+  - React/DevSupport (0.57.0):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.57.0)
+  - React/jschelpers (0.57.0):
+    - Folly (= 2016.10.31.00)
+    - React/PrivateDatabase
+  - React/jsinspector (0.57.0)
+  - React/PrivateDatabase (0.57.0)
+  - React/RCTBlob (0.57.0):
+    - React/Core
+  - React/RCTCameraRoll (0.57.0):
+    - React/Core
+    - React/RCTImage
+  - React/RCTImage (0.57.0):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTNetwork (0.57.0):
+    - React/Core
+  - React/RCTWebSocket (0.57.0):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
+  - RNTroilaAlert (0.0.1)
   - TRCustomAlert (0.0.1)
+  - yoga (0.57.0.React)
 
 DEPENDENCIES:
+  - boost-for-react-native
+  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - glog (from `../node_modules/react-native/third-party-podspecs/GLog.podspec`)
+  - React (from `../node_modules/react-native`)
+  - React/Core (from `../node_modules/react-native`)
+  - React/CxxBridge (from `../node_modules/react-native`)
+  - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTCameraRoll (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - RNTroilaAlert (from `../../RNTroilaAlert.podspec`)
   - TRCustomAlert
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+EXTERNAL SOURCES:
+  DoubleConversion:
+    :podspec: ../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
+  Folly:
+    :podspec: ../node_modules/react-native/third-party-podspecs/Folly.podspec
+  glog:
+    :podspec: ../node_modules/react-native/third-party-podspecs/GLog.podspec
+  React:
+    :path: ../node_modules/react-native
+  RNTroilaAlert:
+    :path: ../../RNTroilaAlert.podspec
+  yoga:
+    :path: ../node_modules/react-native/ReactCommon/yoga
 
 SPEC CHECKSUMS:
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
+  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
+  Folly: c89ac2d5c6ab169cd7397ef27485c44f35f742c7
+  glog: e8acf0ebbf99759d3ff18c86c292a5898282dcde
+  React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
+  RNTroilaAlert: ab331d4c72acf895216d0463b9b8a3dd83f8161a
   TRCustomAlert: 3b0b2f89731cf38043fb9badb58850bd28b85e5d
+  yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 174a764dcfff4f1d30db4da3bc7ab7885a6671e9
+PODFILE CHECKSUM: c3dffedc776268ecc2f1b564551d6a14573e5442
 
 COCOAPODS: 1.4.0
