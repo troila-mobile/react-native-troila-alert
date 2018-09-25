@@ -44,6 +44,9 @@ RCT_EXPORT_METHOD(toast:(NSDictionary*)dictMsg){
             [TRCustomAlert showWarningWithMessage:title];
         }else if ([icon isEqualToString:@"fail"]) {
             [TRCustomAlert showErrorWithMessage:title];
+        }else{
+            //none
+           [TRCustomAlert showBottomMessage:title];
         }
         
 
