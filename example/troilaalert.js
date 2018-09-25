@@ -29,7 +29,7 @@ class CustomAlert{
         icon?:?string
     ):void{
         if(Platform.OS === 'ios'){
-
+            CustomAlertIos.toast(title,icon)
         }else if(Platform.OS === 'android'){
             CustomAlertAndroid.toast(title,icon)
         }
@@ -39,7 +39,7 @@ class CustomAlert{
         title:?string
     ):void{
         if(Platform.OS === 'ios'){
-
+            CustomAlertIos.showLoading(title)
         }else if(Platform.OS === 'android'){
             CustomAlertAndroid.showLoading(title)
         }
@@ -47,7 +47,7 @@ class CustomAlert{
 
     static hideLoading():void{
         if(Platform.OS === 'ios'){
-
+            CustomAlertIos.hideLoading()
         }else if(Platform.OS === 'android'){
             CustomAlertAndroid.hideLoading()
         }
@@ -97,6 +97,28 @@ class CustomAlertAndroid{
 
 class CustomAlertIos {
 
+    static toast(
+        title:?string,
+        icon?:?string
+    ):void{
+        let config = {
+            title:title || '',
+            icon: icon || 'none'
+        };
+        RNTroilaAlert.toast(config)
+    }
+
+
+    static showLoading(
+        title:?string
+    ):void{
+        let message = title || '';
+        RNTroilaAlert.showLoading(message)
+    }
+
+    static hideLoading():void{
+        RNTroilaAlert.hideLoading()
+    }
 }
 
 export default CustomAlert;

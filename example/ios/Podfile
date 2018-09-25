@@ -17,7 +17,6 @@ target 'example' do
     'RCTCameraRoll'
     ]
     
-    pod 'TRCustomAlert'
     pod 'RNTroilaAlert', :path => '../../RNTroilaAlert.podspec'
 end
 

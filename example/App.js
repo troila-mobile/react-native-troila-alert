@@ -23,6 +23,9 @@ export default class App extends Component<Props> {
         return (
             <View style={styles.container}>
                 <TouchableOpacity onPress={()=>{CustomAlert.toast("测试","success")}}>
+                    <Text style={styles.welcome}>弹出alert</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{CustomAlert.toast("测试","success")}}>
                     <Text style={styles.welcome}>弹出Toast && 图标</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>{
