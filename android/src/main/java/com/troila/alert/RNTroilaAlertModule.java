@@ -24,8 +24,9 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
     private static final String KEY_RIGHT_BUTTON = "rightButton";
     private static final String KEY_RIGHT_BUTTON_COLOR = "rightButtonColor";
     private static final String KEY_RIGHT_BUTTON_SIZE = "rightButtonSize";
-    static final String ACTION_BUTTON_CLICKED = "buttonClicked";
-    static final String ACTION_DISMISSED = "dismissed";
+    private static final String KEY_CANCELABLE = "cancelable";
+    private static final String ACTION_BUTTON_CLICKED = "buttonClicked";
+    private static final String ACTION_DISMISSED = "dismissed";
 
     ProgressDialog progressDialog;
     CustomDialog customDialog;
@@ -71,6 +72,9 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
             if(options.hasKey(KEY_RIGHT_BUTTON_SIZE)){
                 customBuilder.setButtonRightSize(options.getInt(KEY_RIGHT_BUTTON_SIZE));
             }
+        }
+        if (options.hasKey(KEY_CANCELABLE)) {
+            customBuilder.setCancelOutSide(options.getBoolean(KEY_CANCELABLE));
         }
         customDialog=customBuilder.create();
         customDialog.show();

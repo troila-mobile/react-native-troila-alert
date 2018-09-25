@@ -10,17 +10,23 @@ export type Buttons = Array<{
     fontSize?:?number
 }>
 
+type Options = {
+    cancelable?:?boolean,
+    onDismiss?:?Function
+}
+
 class CustomAlert{
     static alert(
         title:?string,
         content?:?string,
         icon?:?string,
-        buttons?:Buttons
+        buttons?:Buttons,
+        options?:Options
     ):void{
         if(Platform.OS === 'ios'){
             CustomAlertIos.alert(title,content,icon,buttons)
         }else if(Platform.OS === 'android'){
-            CustomAlertAndroid.alert(title,content,icon,buttons)
+            CustomAlertAndroid.alert(title,content,icon,buttons,options)
         }
     }
 
@@ -59,13 +65,17 @@ class CustomAlertAndroid{
         title:?string,
         content?:?string,
         icon?:?string,
-        buttons?:Buttons
+        buttons?:Buttons,
+        options?:Options
     ):void{
         let config = {
             title:title || '',
             content:content || '',
             icon: icon || ''
         };
+        if(options){
+            config={...config,cancelable:options.cancelable};
+        }
         let validButtons:Buttons = buttons? buttons.slice(0,2):[];
         let leftButton = validButtons.shift();
         let rightButton = validButtons.shift();
@@ -85,6 +95,8 @@ class CustomAlertAndroid{
                     } else if (buttonKey === -2) {
                         rightButton.onPress && rightButton.onPress();
                     }
+                }else if(action === 'dismissed'){
+                    options&&options.onDismiss&&options.onDismiss();
                 }
             }
         )
