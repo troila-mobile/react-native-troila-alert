@@ -64,7 +64,7 @@ class CustomAlertAndroid{
         let config = {
             title:title || '',
             content:content || '',
-            icon: icon || 'none'
+            icon: icon || ''
         };
         let validButtons:Buttons = buttons? buttons.slice(0,2):[];
         let leftButton = validButtons.shift();
@@ -96,7 +96,7 @@ class CustomAlertAndroid{
     ):void{
         let config = {
             title:title || '',
-            icon: icon || 'none'
+            icon: icon || ''
         };
         RNTroilaAlert.showToast(
             config,
