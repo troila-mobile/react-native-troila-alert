@@ -17,6 +17,6 @@ target 'example' do
     'RCTCameraRoll'
     ]
     
-    pod 'RNTroilaAlert', :path => '../../RNTroilaAlert.podspec'
+    pod 'RNTroilaAlert', :path => '../node_modules/react-native-troila-alert/ios/RNTroilaAlert.podspec'
 end
 

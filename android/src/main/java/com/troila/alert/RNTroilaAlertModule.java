@@ -73,10 +73,10 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
                 customBuilder.setButtonRightSize(options.getInt(KEY_RIGHT_BUTTON_SIZE));
             }
         }
-        if (options.hasKey(KEY_CANCELABLE)) {
-            customBuilder.setCancelOutSide(options.getBoolean(KEY_CANCELABLE));
-        }
         customDialog=customBuilder.create();
+        if (options.hasKey(KEY_CANCELABLE)) {
+            customDialog.setCancelable(options.getBoolean(KEY_CANCELABLE));
+        }
         customDialog.show();
     }
 
