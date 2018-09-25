@@ -130,8 +130,8 @@ class CustomAlertIos {
             icon: icon || 'none'
         };
         let validButtons:Buttons = buttons? buttons.slice(0,2):[];
-        let leftButton = validButtons.shift();
-        let rightButton = validButtons.shift();
+        let leftButton = validButtons.pop();
+        let rightButton = validButtons.pop();
         if(leftButton){
             config={...config, leftButton:leftButton.text, leftButtonColor:leftButton.color, leftButtonSize:leftButton.fontSize}
         }
