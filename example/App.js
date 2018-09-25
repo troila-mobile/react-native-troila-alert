@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
 import CustomAlert from './troilaalert';
 
 const instructions = Platform.select({
@@ -24,7 +24,7 @@ export default class App extends Component<Props> {
             <View style={styles.container}>
                 {/*<TouchableOpacity onPress={()=>{CustomAlert.toast("测试","success")}}>*/}
                 <TouchableOpacity onPress={()=>{CustomAlert.toast("网络连接失败，请稍后重试","fail")}}>
-                    <Text style={styles.welcome}>弹出Toast && 图标</Text>
+                    <Text style={styles.welcome}>弹出Toast</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>{
                     CustomAlert.showLoading("正在载入中...");
@@ -34,8 +34,9 @@ export default class App extends Component<Props> {
                 }}>
                     <Text style={styles.welcome}>弹出Loading</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{CustomAlert.alert("提示","测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试","fail",[{
-                    text:'确认',color:'#DC143C',fontSize:'20',onPress:()=>CustomAlert.toast("成功","success")
+
+                <TouchableOpacity onPress={()=>{CustomAlert.alert("标题","测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试","success",[{
+                    text:'确认',onPress:()=>CustomAlert.toast("提交成功","success")
                 },{
                     text:'取消',onPress:()=>CustomAlert.toast("网络连接失败，请稍后重试","fail")
                 }])}}>
