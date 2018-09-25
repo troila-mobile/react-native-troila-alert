@@ -44,6 +44,9 @@ RCT_EXPORT_METHOD(toast:(NSDictionary*)dictMsg){
             [TRCustomAlert showWarningWithMessage:title];
         }else if ([icon isEqualToString:@"fail"]) {
             [TRCustomAlert showErrorWithMessage:title];
+        }else{
+            //none
+           [TRCustomAlert showBottomMessage:title];
         }
         
 
@@ -71,7 +74,7 @@ RCT_EXPORT_METHOD(alert:(NSDictionary*)dictMsg callback:(RCTResponseSenderBlock)
            style=TRCustomAlertStyleSuccess;
         }else if ([icon isEqualToString:@"warning"]) {
             style=TRCustomAlertStyleWarning;
-        }else if ([icon isEqualToString:@"failure"]) {
+        }else if ([icon isEqualToString:@"fail"]) {
             style=TRCustomAlertStyleError;
         }else{
             style=TRCustomAlertStyleNone;
