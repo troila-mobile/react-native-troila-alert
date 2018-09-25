@@ -36,10 +36,10 @@ export default class App extends Component<Props> {
                 }}>
                     <Text style={styles.welcome}>弹出Loading</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{CustomAlert.alert("标题","测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试","",[{
-                    text:'确认',onPress:()=>CustomAlert.toast("\n成功","success")
+                <TouchableOpacity onPress={()=>{CustomAlert.alert("标题","测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试","success",[{
+                    text:'确认',onPress:()=>CustomAlert.toast("提交成功","success")
                 },{
-                    text:'取消',onPress:()=>CustomAlert.toast("\n网络连接失败，请稍后重试","fail")
+                    text:'取消',onPress:()=>CustomAlert.toast("网络连接失败，请稍后重试","fail")
                 }])}}>
                     <Text style={styles.welcome}>弹出Alert</Text>
                 </TouchableOpacity>
