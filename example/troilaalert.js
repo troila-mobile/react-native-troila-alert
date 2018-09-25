@@ -20,7 +20,7 @@ class CustomAlert{
         if(Platform.OS === 'ios'){
 
         }else if(Platform.OS === 'android'){
-
+            CustomAlertAndroid.alert(title,content,icon,buttons)
         }
     }
 
@@ -65,8 +65,29 @@ class CustomAlertAndroid{
             title:title || '',
             content:content || '',
             icon: icon || 'none'
+        };
+        let validButtons:Buttons = buttons? buttons.slice(0,2):[];
+        let leftButton = validButtons.shift();
+        let rightButton = validButtons.shift();
+        if(leftButton){
+            config={...config, leftButton:leftButton.text, leftButtonColor:leftButton.color, leftButtonSize:leftButton.fontSize}
         }
-
+        if(rightButton){
+            config={...config, rightButton:rightButton.text, rightButtonColor:rightButton.color, rightButtonSize:rightButton.fontSize}
+        }
+        RNTroilaAlert.showAlert(
+            config,
+            (errorMessage) => console.warn(errorMessage),
+            (action, buttonKey) =>{
+                if (action === 'buttonClicked') {
+                    if (buttonKey === -1) {
+                        leftButton.onPress && leftButton.onPress();
+                    } else if (buttonKey === -2) {
+                        rightButton.onPress && rightButton.onPress();
+                    }
+                }
+            }
+        )
     }
 
     static toast(

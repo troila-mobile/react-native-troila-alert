@@ -22,7 +22,7 @@ export default class App extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity onPress={()=>{CustomAlert.toast("测试","success")}}>
+                <TouchableOpacity onPress={()=>{CustomAlert.toast("\n网络连接失败，请稍后重试","fail")}}>
                     <Text style={styles.welcome}>弹出Toast && 图标</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>{
@@ -33,8 +33,12 @@ export default class App extends Component<Props> {
                 }}>
                     <Text style={styles.welcome}>弹出Loading</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{CustomAlert.hideLoading()}}>
-                    <Text style={styles.welcome}>隐藏Loading</Text>
+                <TouchableOpacity onPress={()=>{CustomAlert.alert("提示","测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试","fail",[{
+                    text:'确认',onPress:()=>CustomAlert.toast("\n成功","success")
+                },{
+                    text:'取消',onPress:()=>CustomAlert.toast("\n网络连接失败，请稍后重试","fail")
+                }])}}>
+                    <Text style={styles.welcome}>弹出Alert</Text>
                 </TouchableOpacity>
                 <Text style={styles.instructions}>To get started, edit App.js</Text>
                 <Text style={styles.instructions}>{instructions}</Text>
