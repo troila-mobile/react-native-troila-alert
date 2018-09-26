@@ -7,8 +7,9 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
-import CustomAlert from './troilaalert';
+import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+
+import CustomAlert from 'react-native-troila-alert'
 
 const instructions = Platform.select({
     ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -22,30 +23,27 @@ export default class App extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity onPress={()=>{CustomAlert.toast("网络连接失败，请稍后重试","")}}>
-                    <Text style={styles.welcome}>弹出Toast</Text>
+                <TouchableOpacity onPress={()=>CustomAlert.toast("测试底部文字")}>
+                    <Text style={styles.welcome}>弹出底部TOAST</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{CustomAlert.toast("网络连接失败，请稍后重试","fail")}}>
-                    <Text style={styles.welcome}>弹出Toast</Text>
+                <TouchableOpacity onPress={()=>CustomAlert.toast("测试底部文字","success")}>
+                    <Text style={styles.welcome}>弹出TOAST && ICON</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>{
-                    CustomAlert.showLoading("正在载入中...");
+                    CustomAlert.showLoading("正在加载中...");
                     setTimeout(()=>{
                         CustomAlert.hideLoading()
                     },3000)
                 }}>
-                    <Text style={styles.welcome}>弹出Loading</Text>
+                    <Text style={styles.welcome}>弹出LOADING</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity onPress={()=>{CustomAlert.alert("","测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试","warning",[{
-                    text:'确认',onPress:()=>CustomAlert.toast("提交成功","success")
-                },{
-                    text:'取消',onPress:()=>CustomAlert.toast("网络连接失败，请稍后重试","fail")
-                }])}}>
-                    <Text style={styles.welcome}>弹出Alert</Text>
+                <TouchableOpacity onPress={()=>CustomAlert.alert("标题","测试弹出框内容文字特别多啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊","warning",[{text:"确认",onPress:()=>{
+                        CustomAlert.toast("点击确认","success")
+                    }},{text:"取消",onPress:()=>{
+                        CustomAlert.toast("点击取消","fail")
+                    }}])}>
+                    <Text style={styles.welcome}>弹出ALERT</Text>
                 </TouchableOpacity>
-                <Text style={styles.instructions}>To get started, edit App.js</Text>
-                <Text style={styles.instructions}>{instructions}</Text>
             </View>
         );
     }
