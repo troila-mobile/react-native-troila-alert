@@ -38,7 +38,7 @@ export default class App extends Component<Props> {
                     <Text style={styles.welcome}>弹出LOADING</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>CustomAlert.alert("标题","测试弹出框内容文字特别多啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊","warning",[{text:"确认",onPress:()=>{
-                        CustomAlert.toast("点击确认","success")
+                        console.log("confirmed")
                     }},{text:"取消",onPress:()=>{
                         CustomAlert.toast("点击取消","fail")
                     }}])}>
