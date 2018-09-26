@@ -79,7 +79,15 @@ RCT_EXPORT_METHOD(alert:(NSDictionary*)dictMsg callback:(RCTResponseSenderBlock)
         }else{
             style=TRCustomAlertStyleNone;
         }
-        [TRCustomAlert showAlertWithButtonTitleArray:@[leftButton,rightButton] style:style title:title content:content complete:^(NSInteger index, NSString *title) {
+        NSMutableArray *arrayBtn=[NSMutableArray array];
+        if (leftButton!=nil) {
+            [arrayBtn addObject:leftButton];
+        }
+        if (rightButton!=nil) {
+            [arrayBtn addObject:rightButton];
+        }
+        [TRCustomAlert showAlertWithButtonTitleArray:arrayBtn style:style title:title content:content complete:^(NSInteger index, NSString *title) {
+            [TRCustomAlert dissmis];
             callback(@[@(index),title]);
         }];
         //设置样式
