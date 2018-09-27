@@ -148,7 +148,17 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
             errorCallback.invoke("Tried to show a toast while not attached to an Activity");
             return;
         }
-        if(progressIsShowing()) progressDialog.dismiss();
+        try {
+            if (progressIsShowing()) {
+                progressDialog.dismiss();
+            }
+        } catch (final IllegalArgumentException e) {
+            // Handle or log or ignore
+        } catch (final Exception e) {
+            // Handle or log or ignore
+        } finally {
+            progressDialog = null;
+        }
     }
 
     private boolean progressIsShowing() {

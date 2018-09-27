@@ -14,10 +14,8 @@
 
 #### iOS
 
-1. In XCode, in the project navigator, right click `Libraries` ➜ `Add Files to [your project's name]`
-2. Go to `node_modules` ➜ `react-native-troila-alert` and add `RNTroilaAlert.xcodeproj`
-3. In XCode, in the project navigator, select your project. Add `libRNTroilaAlert.a` to your project's `Build Phases` ➜ `Link Binary With Libraries`
-4. Run your project (`Cmd+R`)<
+1. add `pod 'RNTroilaAlert', :path => '../node_modules/react-native-troila-alert/ios/RNTroilaAlert.podspec'` to your Pod file
+2. run `pod install`
 
 #### Android
 
@@ -33,13 +31,20 @@
   	```
       compile project(':react-native-troila-alert')
   	```
+4. add `maven { url 'https://jitpack.io' }` to your project level `build.gradle`
 
 
 ## Usage
 ```javascript
-import RNTroilaAlert from 'react-native-troila-alert';
+import CustomAlert from 'react-native-troila-alert';
 
-// TODO: What to do with the module?
-RNTroilaAlert;
+CustomAlert.toast("test")
+CustomAlert.toast("toast with success icon","success")
+
+CustomAlert.showLoading("Loading...")
+CustomAlert.hideLoading()
+
+CustomAlert.alert("title","content","warning",[{text:"confirm",onPress:()=>console.log("confirm clicked")}])
 ```
+
   
