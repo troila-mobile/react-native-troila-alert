@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableOpacity,Alert,ToastAndroid} from 'react-native';
 
 import CustomAlert from 'react-native-troila-alert'
 
@@ -23,7 +23,7 @@ export default class App extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity onPress={()=>CustomAlert.toast("测试底部文字")}>
+                <TouchableOpacity onPress={()=>ToastAndroid.show("A pikachu appeared nearby !", ToastAndroid.SHORT)}>
                     <Text style={styles.welcome}>弹出底部TOAST</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>CustomAlert.toast("测试底部文字","success")}>

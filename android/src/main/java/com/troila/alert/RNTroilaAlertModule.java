@@ -1,7 +1,10 @@
 
 package com.troila.alert;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.facebook.react.bridge.Callback;
@@ -9,11 +12,17 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.troila.customealert.CustomDialog;
 import com.troila.customealert.CustomToast;
 import com.troila.customealert.ProgressDialog;
 
+import javax.annotation.Nullable;
+
 public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
+
+    private static final String FRAGMENT_TAG =
+            "com.troila.alert.RNTroilaAlertModule";
 
     private static final String KEY_TITLE = "title";
     private static final String KEY_ICON = "icon";
@@ -39,54 +48,57 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void showAlert(ReadableMap options, Callback errorCallback, Callback actionCallback) {
-        if(reactContext.getCurrentActivity()==null){
-            errorCallback.invoke("Tried to show a toast while not attached to an Activity");
+    public void showAlert(ReadableMap options, Callback errorCallback, final Callback actionCallback) {
+        final FragmentManagerHelper fragmentManagerHelper = getFragmentManagerHelper();
+        if (fragmentManagerHelper == null) {
+            errorCallback.invoke("Tried to show an alert while not attached to an Activity");
             return;
         }
-        AlertListener alertListener = actionCallback!=null?new AlertListener(actionCallback):null;
-        CustomDialog.Builder customBuilder = new CustomDialog.Builder(reactContext.getCurrentActivity());
-        if(options.hasKey(KEY_TITLE)){
-            customBuilder.setTitle(options.getString(KEY_TITLE));
+
+        final Bundle args = new Bundle();
+        if (options.hasKey(KEY_TITLE)) {
+            args.putString(AlertFragment.KEY_TITLE, options.getString(KEY_TITLE));
         }
-        if(options.hasKey(KEY_CONTENT)){
-            customBuilder.setMessage(options.getString(KEY_CONTENT));
+        if (options.hasKey(KEY_CONTENT)) {
+            args.putString(AlertFragment.KEY_CONTENT, options.getString(KEY_CONTENT));
         }
-        if(options.hasKey(KEY_ICON)){
-            customBuilder.setIconType(options.getString(KEY_ICON));
-        }
-        if(options.hasKey(KEY_LEFT_BUTTON)){
-            customBuilder.setPositiveButton(options.getString(KEY_LEFT_BUTTON), alertListener);
-            if(options.hasKey(KEY_LEFT_BUTTON_COLOR)){
-                customBuilder.setButtonLeftColor(options.getString(KEY_LEFT_BUTTON_COLOR));
+        if (options.hasKey(KEY_LEFT_BUTTON)) {
+            args.putString(AlertFragment.KEY_LEFT_BUTTON, options.getString(KEY_LEFT_BUTTON));
+            if (options.hasKey(KEY_LEFT_BUTTON_COLOR)) {
+                args.putString(AlertFragment.KEY_LEFT_BUTTON_COLOR,options.getString(KEY_LEFT_BUTTON_COLOR));
             }
-            if(options.hasKey(KEY_LEFT_BUTTON_SIZE)){
-                customBuilder.setButtonLeftSize(options.getInt(KEY_LEFT_BUTTON_SIZE));
+            if (options.hasKey(KEY_LEFT_BUTTON_SIZE)) {
+                args.putInt(AlertFragment.KEY_LEFT_BUTTON_SIZE,options.getInt(KEY_LEFT_BUTTON_SIZE));
             }
         }
-        if(options.hasKey(KEY_RIGHT_BUTTON)){
-            customBuilder.setNegativeButton(options.getString(KEY_RIGHT_BUTTON), alertListener);
-            if(options.hasKey(KEY_RIGHT_BUTTON_COLOR)){
-                customBuilder.setButtonRightColor(options.getString(KEY_RIGHT_BUTTON_COLOR));
+        if (options.hasKey(KEY_RIGHT_BUTTON)) {
+            args.putString(AlertFragment.KEY_RIGHT_BUTTON, options.getString(KEY_RIGHT_BUTTON));
+            if (options.hasKey(KEY_RIGHT_BUTTON_COLOR)) {
+                args.putString(AlertFragment.KEY_RIGHT_BUTTON_COLOR,options.getString(KEY_RIGHT_BUTTON_COLOR));
             }
-            if(options.hasKey(KEY_RIGHT_BUTTON_SIZE)){
-                customBuilder.setButtonRightSize(options.getInt(KEY_RIGHT_BUTTON_SIZE));
+            if (options.hasKey(KEY_RIGHT_BUTTON_SIZE)) {
+                args.putInt(AlertFragment.KEY_RIGHT_BUTTON_SIZE,options.getInt(KEY_RIGHT_BUTTON_SIZE));
             }
         }
-        customDialog=customBuilder.create();
         if (options.hasKey(KEY_CANCELABLE)) {
-            customDialog.setCancelable(options.getBoolean(KEY_CANCELABLE));
+            args.putBoolean(KEY_CANCELABLE, options.getBoolean(KEY_CANCELABLE));
         }
-        customDialog.show();
+
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                fragmentManagerHelper.showNewAlert(args, actionCallback);
+            }
+        });
     }
 
-    class AlertListener implements DialogInterface.OnClickListener, DialogInterface.OnDismissListener{
+    class AlertListener implements DialogInterface.OnClickListener, DialogInterface.OnDismissListener {
 
         private final Callback mCallback;
         private boolean mCallbackConsumed = false;
 
-        public AlertListener(Callback callback){
-            mCallback=callback;
+        public AlertListener(Callback callback) {
+            mCallback = callback;
         }
 
         @Override
@@ -94,7 +106,6 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
             if (!mCallbackConsumed) {
                 if (getReactApplicationContext().hasActiveCatalystInstance()) {
                     mCallback.invoke(ACTION_BUTTON_CLICKED, which);
-                    customDialog.dismiss();
                     mCallbackConsumed = true;
                 }
             }
@@ -114,37 +125,37 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void showToast(ReadableMap options, Callback errorCallback) {
-        if(reactContext.getCurrentActivity()==null){
+        if (reactContext.getCurrentActivity() == null) {
             errorCallback.invoke("Tried to show a toast while not attached to an Activity");
             return;
         }
         String title = "";
         String icon = "none";
-        if(options.hasKey(KEY_TITLE)){
-            title=options.getString(KEY_TITLE);
+        if (options.hasKey(KEY_TITLE)) {
+            title = options.getString(KEY_TITLE);
         }
-        if(options.hasKey(KEY_ICON)){
-            icon=options.getString(KEY_ICON);
+        if (options.hasKey(KEY_ICON)) {
+            icon = options.getString(KEY_ICON);
         }
-        CustomToast.showToast(reactContext.getCurrentActivity(),icon,title);
+        CustomToast.showToast(reactContext.getCurrentActivity(), icon, title);
     }
 
     @ReactMethod
     public void showLoading(String title, Callback errorCallback) {
-        if(reactContext.getCurrentActivity()==null){
+        if (reactContext.getCurrentActivity() == null) {
             errorCallback.invoke("Tried to show a toast while not attached to an Activity");
             return;
         }
-        if(progressIsShowing()) return;
+        if (progressIsShowing()) return;
         ProgressDialog.Builder progressBuilder = new ProgressDialog.Builder(reactContext.getCurrentActivity());
-        if(!TextUtils.isEmpty(title)) progressBuilder.setTitle(title);
-        progressDialog=progressBuilder.create();
+        if (!TextUtils.isEmpty(title)) progressBuilder.setTitle(title);
+        progressDialog = progressBuilder.create();
         progressDialog.show();
     }
 
     @ReactMethod
     public void hideLoading(Callback errorCallback) {
-        if(reactContext.getCurrentActivity()==null){
+        if (reactContext.getCurrentActivity() == null) {
             errorCallback.invoke("Tried to show a toast while not attached to an Activity");
             return;
         }
@@ -168,5 +179,32 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return "RNTroilaAlert";
+    }
+
+    private class FragmentManagerHelper {
+        private final @Nullable FragmentManager mFragmentManager;
+        public FragmentManagerHelper(FragmentManager fragmentManager) {
+            mFragmentManager = fragmentManager;
+        }
+        public void showNewAlert(Bundle arguments, Callback actionCallback) {
+            UiThreadUtil.assertOnUiThread();
+
+            RNTroilaAlertModule.AlertListener actionListener =
+                    actionCallback != null ? new RNTroilaAlertModule.AlertListener(actionCallback) : null;
+            AlertFragment alertFragment = new AlertFragment(actionListener, arguments);
+            if (arguments.containsKey(KEY_CANCELABLE)) {
+                alertFragment.setCancelable(arguments.getBoolean(KEY_CANCELABLE));
+            }
+            alertFragment.show(mFragmentManager, FRAGMENT_TAG);
+        }
+    }
+
+    private @Nullable
+    FragmentManagerHelper getFragmentManagerHelper() {
+        Activity activity = getCurrentActivity();
+        if (activity == null) {
+            return null;
+        }
+        return new FragmentManagerHelper(activity.getFragmentManager());
     }
 }
