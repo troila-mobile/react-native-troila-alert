@@ -10,7 +10,7 @@
     "@babel/runtime": "^7.0.0",
     "react": "16.5.0",
     "react-native": "0.57.1",
-    "react-native-troila-alert": "0.0.5"
+    "react-native-troila-alert": "0.0.7"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",

@@ -4126,9 +4126,9 @@ react-is@^16.5.0:
   version "16.5.2"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.5.2.tgz#e2a7b7c3f5d48062eb769fcb123505eb928722e3"
 
-react-native-troila-alert@0.0.5:
-  version "0.0.5"
-  resolved "https://registry.npmjs.org/react-native-troila-alert/-/react-native-troila-alert-0.0.5.tgz#c8c0f1463d909792daed398d563b4284a71dbc88"
+react-native-troila-alert@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.npmjs.org/react-native-troila-alert/-/react-native-troila-alert-0.0.7.tgz#d87c832aeb978ea5694fbe7febf10434ca51c8f9"
 
 react-native@0.57.1:
   version "0.57.1"
