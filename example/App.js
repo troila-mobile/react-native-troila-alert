@@ -23,10 +23,10 @@ export default class App extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity onPress={()=>ToastAndroid.show("A pikachu appeared nearby !", ToastAndroid.SHORT)}>
+                <TouchableOpacity onPress={()=>CustomAlert.toast("测试底部文字")}>
                     <Text style={styles.welcome}>弹出底部TOAST</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>CustomAlert.toast("测试底部文字","success")}>
+                <TouchableOpacity onPress={()=>CustomAlert.toast("测试图片文字","success")}>
                     <Text style={styles.welcome}>弹出TOAST && ICON</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>{

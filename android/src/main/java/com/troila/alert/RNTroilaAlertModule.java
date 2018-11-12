@@ -80,6 +80,9 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
         if (options.hasKey(KEY_CONTENT)) {
             args.putString(AlertFragment.KEY_CONTENT, options.getString(KEY_CONTENT));
         }
+        if (options.hasKey(KEY_ICON)) {
+            args.putString(AlertFragment.KEY_ICON, options.getString(KEY_ICON));
+        }
         if (options.hasKey(KEY_LEFT_BUTTON)) {
             args.putString(AlertFragment.KEY_LEFT_BUTTON, options.getString(KEY_LEFT_BUTTON));
             if (options.hasKey(KEY_LEFT_BUTTON_COLOR)) {
