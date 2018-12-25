@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNTroilaAlert"
-  s.version      = "0.0.8"
+  s.version      = "0.1.0"
   s.summary      = "RNTroilaAlert"
   s.description  = <<-DESC
                   RNTroilaAlert is very good
@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
   s.author             = { "mu" => "author@domain.cn" }
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/troila-mobile/react-native-troila-alert.git", :tag => "0.0.8" }
+  s.source       = { :git => "https://github.com/troila-mobile/react-native-troila-alert.git", :tag => "0.1.0" }
   s.source_files  = "**/*.{h,m}"
   s.requires_arc = true
 
