@@ -53,6 +53,26 @@ RCT_EXPORT_METHOD(toast:(NSDictionary*)dictMsg){
     });
 }
 
+//自适应底部简单提醒
+RCT_EXPORT_METHOD(toastFit:(NSDictionary*)dictMsg){
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //title ''   icon none
+        NSString *title=dictMsg[@"title"];//默认为 ''
+        NSString *icon=dictMsg[@"icon"];//默认为 none,成功 success，失败 fail，警告，warning
+        
+        if ([icon isEqualToString:@"success"]) {
+            [TRCustomAlert showSuccessWithMessage:title];
+        }else if ([icon isEqualToString:@"warning"]) {
+            [TRCustomAlert showWarningWithMessage:title];
+        }else if ([icon isEqualToString:@"fail"]) {
+            [TRCustomAlert showErrorWithMessage:title];
+        }else{
+            //none
+            [TRCustomAlert showFitBottomMessage:title];
+        }
+    });
+}
+
 //强提示
 RCT_EXPORT_METHOD(alert:(NSDictionary*)dictMsg callback:(RCTResponseSenderBlock)callback){
     dispatch_async(dispatch_get_main_queue(), ^{

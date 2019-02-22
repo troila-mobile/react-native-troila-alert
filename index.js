@@ -41,6 +41,17 @@ class CustomAlert{
         }
     }
 
+    static toastFit(
+            title:?string,
+            icon?:?string
+        ):void{
+            if(Platform.OS === 'ios'){
+            CustomAlertIos.toastFit(title,icon)
+        }else if(Platform.OS === 'android'){
+            CustomAlertAndroid.toast(title,icon)
+        }
+    }
+
     static showLoading(
         title:?string
     ):void{
@@ -171,6 +182,16 @@ class CustomAlertIos {
             icon: icon || 'none'
         };
         RNTroilaAlert.toast(config)
+    }
+    static toastFit(
+        title:?string,
+        icon?:?string
+    ):void{
+        let config = {
+            title:title || '',
+            icon: icon || 'none'
+        };
+    RNTroilaAlert.toastFit(config)
     }
 
 
