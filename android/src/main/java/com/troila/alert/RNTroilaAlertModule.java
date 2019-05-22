@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.LifecycleEventListener;
@@ -14,14 +15,13 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.UiThreadUtil;
-import com.troila.customealert.CustomDialog;
 import com.troila.customealert.CustomToast;
 import com.troila.customealert.ProgressDialog;
 import com.troila.customealert.custoast.ToastUtils;
 
 import javax.annotation.Nullable;
 
-public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
+public class RNTroilaAlertModule extends ReactContextBaseJavaModule implements LifecycleEventListener{
 
     private static final String FRAGMENT_TAG =
             "com.troila.alert.RNTroilaAlertModule";
@@ -40,34 +40,46 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
     private static final String ACTION_DISMISSED = "dismissed";
 
     ProgressDialog progressDialog;
-    CustomDialog customDialog;
+
+    private boolean mIsInForeground;
 
     private final ReactApplicationContext reactContext;
 
     public RNTroilaAlertModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
-        this.reactContext.addLifecycleEventListener(new LifecycleEventListener() {
-            @Override
-            public void onHostResume() {
+    }
 
-            }
+    @Override
+    public void initialize() {
+        getReactApplicationContext().addLifecycleEventListener(this);
+    }
 
-            @Override
-            public void onHostPause() {
+    @Override
+    public void onHostResume() {
+        mIsInForeground = true;
+        // Check if a dialog has been created while the host was paused, so that we can show it now.
+        FragmentManagerHelper fragmentManagerHelper = getFragmentManagerHelper();
+        if (fragmentManagerHelper != null) {
+            fragmentManagerHelper.showPendingAlert();
+        } else {
+            Log.e("error", "onHostResume called but no FragmentManager found");
+        }
+    }
 
-            }
+    @Override
+    public void onHostPause() {
+        mIsInForeground = false;
+    }
 
-            @Override
-            public void onHostDestroy() {
-                ToastUtils.reset();
-            }
-        });
+    @Override
+    public void onHostDestroy() {
+        ToastUtils.reset();
     }
 
     @ReactMethod
     public void showAlert(ReadableMap options, Callback errorCallback, final Callback actionCallback) {
-        final com.troila.alert.RNTroilaAlertModule.FragmentManagerHelper fragmentManagerHelper = getFragmentManagerHelper();
+        final FragmentManagerHelper fragmentManagerHelper = getFragmentManagerHelper();
         if (fragmentManagerHelper == null) {
             errorCallback.invoke("Tried to show an alert while not attached to an Activity");
             return;
@@ -86,19 +98,19 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
         if (options.hasKey(KEY_LEFT_BUTTON)) {
             args.putString(AlertFragment.KEY_LEFT_BUTTON, options.getString(KEY_LEFT_BUTTON));
             if (options.hasKey(KEY_LEFT_BUTTON_COLOR)) {
-                args.putString(AlertFragment.KEY_LEFT_BUTTON_COLOR,options.getString(KEY_LEFT_BUTTON_COLOR));
+                args.putString(AlertFragment.KEY_LEFT_BUTTON_COLOR, options.getString(KEY_LEFT_BUTTON_COLOR));
             }
             if (options.hasKey(KEY_LEFT_BUTTON_SIZE)) {
-                args.putInt(AlertFragment.KEY_LEFT_BUTTON_SIZE,options.getInt(KEY_LEFT_BUTTON_SIZE));
+                args.putInt(AlertFragment.KEY_LEFT_BUTTON_SIZE, options.getInt(KEY_LEFT_BUTTON_SIZE));
             }
         }
         if (options.hasKey(KEY_RIGHT_BUTTON)) {
             args.putString(AlertFragment.KEY_RIGHT_BUTTON, options.getString(KEY_RIGHT_BUTTON));
             if (options.hasKey(KEY_RIGHT_BUTTON_COLOR)) {
-                args.putString(AlertFragment.KEY_RIGHT_BUTTON_COLOR,options.getString(KEY_RIGHT_BUTTON_COLOR));
+                args.putString(AlertFragment.KEY_RIGHT_BUTTON_COLOR, options.getString(KEY_RIGHT_BUTTON_COLOR));
             }
             if (options.hasKey(KEY_RIGHT_BUTTON_SIZE)) {
-                args.putInt(AlertFragment.KEY_RIGHT_BUTTON_SIZE,options.getInt(KEY_RIGHT_BUTTON_SIZE));
+                args.putInt(AlertFragment.KEY_RIGHT_BUTTON_SIZE, options.getInt(KEY_RIGHT_BUTTON_SIZE));
             }
         }
         if (options.hasKey(KEY_CANCELABLE)) {
@@ -108,7 +120,7 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                fragmentManagerHelper.showNewAlert(args, actionCallback);
+                fragmentManagerHelper.showNewAlert(mIsInForeground,args, actionCallback);
             }
         });
     }
@@ -210,29 +222,60 @@ public class RNTroilaAlertModule extends ReactContextBaseJavaModule {
     }
 
     private class FragmentManagerHelper {
-        private final @Nullable FragmentManager mFragmentManager;
+        private final @Nullable
+        FragmentManager mFragmentManager;
+        private @Nullable
+        Object mFragmentToShow;
+
         public FragmentManagerHelper(FragmentManager fragmentManager) {
             mFragmentManager = fragmentManager;
         }
-        public void showNewAlert(Bundle arguments, Callback actionCallback) {
+
+        public void showPendingAlert() {
+            UiThreadUtil.assertOnUiThread();
+            if (mFragmentToShow == null) {
+                return;
+            }
+            ((AlertFragment) mFragmentToShow).show(mFragmentManager, FRAGMENT_TAG);
+            mFragmentToShow = null;
+        }
+
+        private void dismissExisting() {
+            AlertFragment oldFragment =
+                    (AlertFragment) mFragmentManager.findFragmentByTag(FRAGMENT_TAG);
+            if (oldFragment != null) {
+                oldFragment.dismiss();
+            }
+        }
+
+        public void showNewAlert(boolean isInForeground, Bundle arguments, Callback actionCallback) {
             UiThreadUtil.assertOnUiThread();
 
-            com.troila.alert.RNTroilaAlertModule.AlertListener actionListener =
-                    actionCallback != null ? new com.troila.alert.RNTroilaAlertModule.AlertListener(actionCallback) : null;
+            dismissExisting();
+
+            AlertListener actionListener =
+                    actionCallback != null ? new AlertListener(actionCallback) : null;
             AlertFragment alertFragment = new AlertFragment(actionListener, arguments);
             if (arguments.containsKey(KEY_CANCELABLE)) {
                 alertFragment.setCancelable(arguments.getBoolean(KEY_CANCELABLE));
             }
-            alertFragment.show(mFragmentManager, FRAGMENT_TAG);
+            if (isInForeground) {
+                if (arguments.containsKey(KEY_CANCELABLE)) {
+                    alertFragment.setCancelable(arguments.getBoolean(KEY_CANCELABLE));
+                }
+                alertFragment.show(mFragmentManager, FRAGMENT_TAG);
+            } else {
+                mFragmentToShow = alertFragment;
+            }
         }
     }
 
     private @Nullable
-    com.troila.alert.RNTroilaAlertModule.FragmentManagerHelper getFragmentManagerHelper() {
+    FragmentManagerHelper getFragmentManagerHelper() {
         Activity activity = getCurrentActivity();
         if (activity == null) {
             return null;
         }
-        return new com.troila.alert.RNTroilaAlertModule.FragmentManagerHelper(activity.getFragmentManager());
+        return new FragmentManagerHelper(activity.getFragmentManager());
     }
 }

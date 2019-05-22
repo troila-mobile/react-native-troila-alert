@@ -3,11 +3,14 @@ package com.troila.alert;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.troila.customealert.CustomDialog;
+
+import java.lang.reflect.Field;
 
 import javax.annotation.Nullable;
 
@@ -86,5 +89,24 @@ public class AlertFragment extends DialogFragment implements DialogInterface.OnC
         if (mListener != null) {
             mListener.onDismiss(dialog);
         }
+    }
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        try {
+            Field mDismissed = this.getClass().getSuperclass().getDeclaredField("mDismissed");
+            Field mShownByMe = this.getClass().getSuperclass().getDeclaredField("mShownByMe");
+            mDismissed.setAccessible(true);
+            mShownByMe.setAccessible(true);
+            mDismissed.setBoolean(this, false);
+            mShownByMe.setBoolean(this, true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.add(this, tag);
+        ft.commitAllowingStateLoss();
     }
 }
